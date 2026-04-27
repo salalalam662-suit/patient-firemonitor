@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Patient Monitor</title>
 
 <style>
@@ -10,31 +10,37 @@ body{
 background:#111;
 color:white;
 font-family:Arial;
-text-align:center;
 padding:20px;
+text-align:center;
 }
-
-h1{
-color:#00ffcc;
-}
-
 .card{
 background:#222;
-padding:20px;
-margin:15px auto;
-border-radius:15px;
-max-width:400px;
-font-size:28px;
+padding:15px;
+margin:10px auto;
+border-radius:12px;
+max-width:500px;
+font-size:26px;
 }
-
-.online{color:lime;}
-.offline{color:red;}
+table{
+width:100%;
+max-width:700px;
+margin:auto;
+border-collapse:collapse;
+background:#222;
+}
+th,td{
+padding:10px;
+border:1px solid #444;
+}
+th{
+background:#333;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Real Time Patient Monitoring</h1>
+<h1>Patient Monitoring</h1>
 
 <div class="card" id="temp">Temp: --</div>
 <div class="card" id="hr">HR: --</div>
@@ -42,43 +48,78 @@ font-size:28px;
 <div class="card" id="status">Status: --</div>
 <div class="card" id="time">Time: --</div>
 
+<h2>History</h2>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Time</th>
+<th>Temp</th>
+<th>HR</th>
+<th>SpO2</th>
+</tr>
+</thead>
+<tbody id="historyTable"></tbody>
+</table>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
-  authDomain: "real-time-patient-monito-76d69.firebaseapp.com",
-  databaseURL: "https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "real-time-patient-monito-76d69",
-  storageBucket: "real-time-patient-monito-76d69.firebasestorage.app",
-  messagingSenderId: "807607602018",
-  appId: "1:807607602018:web:5110875164e2873bb77a3b"
+apiKey:"AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
+authDomain:"real-time-patient-monito-76d69.firebaseapp.com",
+databaseURL:"https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId:"real-time-patient-monito-76d69",
+storageBucket:"real-time-patient-monito-76d69.firebasestorage.app",
+messagingSenderId:"807607602018",
+appId:"1:807607602018:web:5110875164e2873bb77a3b"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const liveRef = ref(db, "patient/live");
+// LIVE DATA
+onValue(ref(db,"patient/live"),(snap)=>{
+const d=snap.val();
+if(!d)return;
 
-onValue(liveRef, (snapshot) => {
+temp.innerHTML="Temp: "+d.temp+" °C";
+hr.innerHTML="HR: "+d.hr+" BPM";
+spo2.innerHTML="SpO2: "+d.spo2+" %";
+time.innerHTML="Time: "+d.time;
+status.innerHTML=d.status==1?"Online":"Offline";
+});
 
-const data = snapshot.val();
+// HISTORY
+onValue(ref(db,"patient/history"),(snap)=>{
 
-if(data){
+const data=snap.val();
+let html="";
 
-document.getElementById("temp").innerHTML = "Temp: " + data.temp + " °C";
-document.getElementById("hr").innerHTML = "HR: " + data.hr + " BPM";
-document.getElementById("spo2").innerHTML = "SpO2: " + data.spo2 + " %";
-document.getElementById("time").innerHTML = "Time: " + data.time;
+for(const day in data){
 
-if(data.status == 1)
-document.getElementById("status").innerHTML = "<span class='online'>Online</span>";
-else
-document.getElementById("status").innerHTML = "<span class='offline'>Offline</span>";
+for(const tm in data[day]){
+
+const r=data[day][tm];
+
+html += `
+<tr>
+<td>${day}</td>
+<td>${tm}</td>
+<td>${r.temp}</td>
+<td>${r.hr}</td>
+<td>${r.spo2}</td>
+</tr>
+`;
 
 }
+
+}
+
+document.getElementById("historyTable").innerHTML=html;
 
 });
 
