@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Patient Monitor</title>
+<style>
+body{
+font-family:Arial;
+background:#111;
+color:white;
+text-align:center;
+padding:30px;
+}
+.box{
+background:#222;
+padding:20px;
+margin:10px;
+border-radius:12px;
+font-size:28px;
+}
+.online{color:lime;}
+.offline{color:red;}
+</style>
+</head>
+<body>
+
+<h1>Patient Monitor</h1>
+
+<div class="box" id="temp">Temp: --</div>
+<div class="box" id="hr">HR: --</div>
+<div class="box" id="spo2">SpO2: --</div>
+<div class="box" id="status">Status: --</div>
+<div class="box" id="time">Time: --</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "real-time-patient-monito-76d69.firebaseapp.com",
+databaseURL: "https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId: "real-time-patient-monito-76d69",
+storageBucket: "real-time-patient-monito-76d69.appspot.com",
+messagingSenderId: "YOUR_ID",
+appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const liveRef = ref(db, "patient/live");
+
+onValue(liveRef, (snapshot)=>{
+
+const data = snapshot.val();
+
+document.getElementById("temp").innerHTML="Temp: "+data.temp+" °C";
+document.getElementById("hr").innerHTML="HR: "+data.hr+" BPM";
+document.getElementById("spo2").innerHTML="SpO2: "+data.spo2+" %";
+document.getElementById("time").innerHTML="Time: "+data.time;
+
+if(data.status==1)
+document.getElementById("status").innerHTML="<span class='online'>Online</span>";
+else
+document.getElementById("status").innerHTML="<span class='offline'>Offline</span>";
+
+});
+
+</script>
+</body>
+</html>
