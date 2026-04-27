@@ -1,3 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Monitor</title>
+
+<style>
+body{
+background:#111;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:20px;
+}
+
+h1{
+color:#00ffcc;
+}
+
+.card{
+background:#222;
+padding:20px;
+margin:15px auto;
+border-radius:15px;
+max-width:400px;
+font-size:28px;
+}
+
+.online{color:lime;}
+.offline{color:red;}
+</style>
+</head>
+
+<body>
+
+<h1>Real Time Patient Monitoring</h1>
+
+<div class="card" id="temp">Temp: --</div>
+<div class="card" id="hr">HR: --</div>
+<div class="card" id="spo2">SpO2: --</div>
+<div class="card" id="status">Status: --</div>
+<div class="card" id="time">Time: --</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
   authDomain: "real-time-patient-monito-76d69.firebaseapp.com",
@@ -7,3 +56,33 @@ const firebaseConfig = {
   messagingSenderId: "807607602018",
   appId: "1:807607602018:web:5110875164e2873bb77a3b"
 };
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const liveRef = ref(db, "patient/live");
+
+onValue(liveRef, (snapshot) => {
+
+const data = snapshot.val();
+
+if(data){
+
+document.getElementById("temp").innerHTML = "Temp: " + data.temp + " °C";
+document.getElementById("hr").innerHTML = "HR: " + data.hr + " BPM";
+document.getElementById("spo2").innerHTML = "SpO2: " + data.spo2 + " %";
+document.getElementById("time").innerHTML = "Time: " + data.time;
+
+if(data.status == 1)
+document.getElementById("status").innerHTML = "<span class='online'>Online</span>";
+else
+document.getElementById("status").innerHTML = "<span class='offline'>Offline</span>";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
