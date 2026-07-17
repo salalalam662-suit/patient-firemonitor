@@ -90,24 +90,29 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // LIVE DATA
-onValue(ref(db,"patient/live"),(snap)=>{
-
+onValue(ref(db,"Live"),(snap)=>{
 const d = snap.val();
 if(!d) return;
 
-document.getElementById("temp").innerHTML   = "Temp: " + d.temp + " °C";
-document.getElementById("hr").innerHTML     = "HR: " + d.hr + " BPM";
-document.getElementById("spo2").innerHTML   = "SpO2: " + d.spo2 + " %";
-document.getElementById("time").innerHTML   = "Time: " + d.time;
+document.getElementById("temp").innerHTML =
+"Temp: " + d.Temperature + " °C";
 
-// FIXED STATUS
-document.getElementById("status").innerHTML = "Status: " + d.status;
+document.getElementById("hr").innerHTML =
+"HR: " + d.HeartRate + " BPM";
+
+document.getElementById("spo2").innerHTML =
+"SpO2: " + d.SpO2 + " %";
+
+document.getElementById("time").innerHTML =
+"Time: " + d.Time;
+
+document.getElementById("status").innerHTML =
+"Status: " + d.WiFi;
 
 });
 
 // HISTORY RETRACTABLE
-onValue(ref(db,"patient/history"),(snap)=>{
-
+onValue(ref(db,"History"),(snap)=>{
 const data = snap.val();
 if(!data) return;
 
@@ -123,9 +128,9 @@ html += `
 <thead>
 <tr>
 <th>Time</th>
-<th>Temp</th>
-<th>HR</th>
-<th>SpO2</th>
+<td>${r.Temperature}</td>
+<td>${r.HeartRate}</td>
+<td>${r.SpO2}</td>
 </tr>
 </thead>
 <tbody>
