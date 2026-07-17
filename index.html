@@ -6,164 +6,418 @@
 <title>Patient Monitor</title>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,Arial,sans-serif;
+}
+
 body{
-background:#111;
-color:white;
-font-family:Arial;
+
+background:#050505;
+color:#fff;
+overflow-x:hidden;
+
+background-image:
+linear-gradient(rgba(0,255,120,.05) 1px,transparent 1px),
+linear-gradient(90deg,rgba(0,255,120,.05) 1px,transparent 1px);
+
+background-size:40px 40px;
+
+}
+
+/******** HEADER ********/
+
+header{
+
+background:#0d0d0d;
 padding:20px;
+border-bottom:3px solid #00ff88;
+box-shadow:0 0 20px #00ff88;
+
+}
+
+header h1{
+
 text-align:center;
+font-size:38px;
+letter-spacing:3px;
+color:#00ff88;
+
+}
+
+header h3{
+
+text-align:center;
+font-weight:400;
+margin-top:8px;
+color:white;
+
+}
+
+/******** STATUS ********/
+
+.status{
+
+display:flex;
+justify-content:center;
+align-items:center;
+gap:12px;
+
+margin-top:15px;
+
+font-size:22px;
+
+}
+
+.dot{
+
+width:18px;
+height:18px;
+background:#00ff00;
+border-radius:50%;
+
+animation:blink 1s infinite;
+
+}
+
+@keyframes blink{
+
+50%{
+
+opacity:.2;
+
+}
+
+}
+
+/******** ECG ********/
+
+.ecg{
+
+margin:30px auto;
+
+width:90%;
+height:120px;
+
+border:2px solid #00ff88;
+
+border-radius:15px;
+
+overflow:hidden;
+
+background:black;
+
+position:relative;
+
+}
+
+svg{
+
+width:200%;
+height:120px;
+
+position:absolute;
+
+animation:move 5s linear infinite;
+
+}
+
+@keyframes move{
+
+from{
+
+transform:translateX(0);
+
+}
+
+to{
+
+transform:translateX(-50%);
+
+}
+
+}
+
+/******** CARDS ********/
+
+.cards{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:20px;
+
+padding:30px;
+
 }
 
 .card{
-background:#222;
-padding:15px;
-margin:10px auto;
-border-radius:12px;
-max-width:500px;
-font-size:26px;
+
+background:#111;
+
+border-radius:20px;
+
+padding:25px;
+
+text-align:center;
+
+box-shadow:0 0 20px rgba(0,255,120,.3);
+
+transition:.3s;
+
 }
 
-details{
-max-width:700px;
-margin:10px auto;
-background:#222;
-border-radius:10px;
-padding:10px;
-text-align:left;
+.card:hover{
+
+transform:scale(1.05);
+
+box-shadow:0 0 35px #00ff88;
+
 }
 
-summary{
-font-size:22px;
-cursor:pointer;
+.card h2{
+
+margin-bottom:15px;
+
+color:#00ff88;
+
+}
+
+.value{
+
+font-size:38px;
+
 font-weight:bold;
-padding:10px;
+
+}
+
+/******** HISTORY ********/
+
+.history{
+
+width:95%;
+
+margin:auto;
+
+background:#111;
+
+padding:20px;
+
+border-radius:15px;
+
+margin-bottom:30px;
+
 }
 
 table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-}
 
-th,td{
-padding:10px;
-border:1px solid #444;
-text-align:center;
+width:100%;
+
+border-collapse:collapse;
+
+margin-top:20px;
+
 }
 
 th{
-background:#333;
+
+background:#00aa55;
+
+padding:15px;
+
 }
+
+td{
+
+padding:15px;
+
+text-align:center;
+
+border-bottom:1px solid #333;
+
+}
+
+tr:hover{
+
+background:#1a1a1a;
+
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>Health Monitoring of (Patients Name)</h1>
+<header>
 
-<div class="card" id="temp">Temp: --</div>
-<div class="card" id="hr">HR: --</div>
-<div class="card" id="spo2">SpO2: --</div>
-<div class="card" id="status">Status: --</div>
-<div class="card" id="time">Time: --</div>
+<h1>🏥 PATIENT HEALTH MONITORING SYSTEM</h1>
 
-<h2>History</h2>
+<h3>Sarhad University of Science & Information Technology</h3>
 
-<div id="historyBox"></div>
+<div class="status">
 
-<script type="module">
+<div class="dot"></div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+<div id="status">
 
-const firebaseConfig = {
-apiKey:"AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
-authDomain:"real-time-patient-monito-76d69.firebaseapp.com",
-databaseURL:"https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
-projectId:"real-time-patient-monito-76d69",
-storageBucket:"real-time-patient-monito-76d69.firebasestorage.app",
-messagingSenderId:"807607602018",
-appId:"1:807607602018:web:5110875164e2873bb77a3b"
-};
+ONLINE
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+</div>
 
-// LIVE DATA
-onValue(ref(db,"Live"),(snap)=>{
-const d = snap.val();
-if(!d) return;
+</div>
 
-document.getElementById("temp").innerHTML =
-"Temp: " + d.Temperature + " °C";
+</header>
 
-document.getElementById("hr").innerHTML =
-"HR: " + d.HeartRate + " BPM";
+<!-- ECG Animation -->
 
-document.getElementById("spo2").innerHTML =
-"SpO2: " + d.SpO2 + " %";
+<div class="ecg">
 
-document.getElementById("time").innerHTML =
-"Time: " + d.Time;
+<svg viewBox="0 0 1200 120">
 
-document.getElementById("status").innerHTML =
-"Status: " + d.WiFi;
+<polyline
 
-});
+fill="none"
 
-// HISTORY RETRACTABLE
-onValue(ref(db,"History"),(snap)=>{
-const data = snap.val();
-if(!data) return;
+stroke="#00ff66"
 
-let html = "";
+stroke-width="3"
 
-for(const day in data){
+points="
 
-html += `
-<details>
-<summary>${day}</summary>
+0,60
 
-<table>
-<thead>
-<tr>
-<th>Time</th>
-<td>${r.Temperature}</td>
-<td>${r.HeartRate}</td>
-<td>${r.SpO2}</td>
-</tr>
-</thead>
-<tbody>
-`;
+80,60
 
-for(const tm in data[day]){
+100,60
 
-const r = data[day][tm];
+120,60
 
-html += `
-<tr>
-<td>${tm}</td>
-<td>${r.temp}</td>
-<td>${r.hr}</td>
-<td>${r.spo2}</td>
-</tr>
-`;
+140,20
 
-}
+160,100
 
-html += `
-</tbody>
-</table>
-</details>
-`;
+180,60
 
-}
+260,60
 
-document.getElementById("historyBox").innerHTML = html;
+340,60
 
-});
+360,20
 
-</script>
+380,100
+
+400,60
+
+480,60
+
+560,60
+
+580,20
+
+600,100
+
+620,60
+
+700,60
+
+780,60
+
+800,20
+
+820,100
+
+840,60
+
+920,60
+
+1000,60
+
+1020,20
+
+1040,100
+
+1060,60
+
+1200,60
+
+"/>
+
+</svg>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+
+<h2>❤️ Heart Rate</h2>
+
+<div class="value" id="hr">
+
+--
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🌡 Temperature</h2>
+
+<div class="value" id="temp">
+
+--
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🫁 SpO₂</h2>
+
+<div class="value" id="spo2">
+
+--
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🕒 Time</h2>
+
+<div class="value" id="time">
+
+--
+
+</div>
+
+</div>
+
+</div>
+
+<div class="history">
+
+<h2 align="center">
+
+📊 Patient History
+
+</h2>
+
+<div id="historyBox">
+
+Loading...
+
+</div>
+
+</div>
 
 </body>
 </html>
