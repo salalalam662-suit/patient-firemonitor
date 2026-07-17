@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Patient Monitor</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Patient Health Monitoring System</title>
 
 <style>
 
@@ -11,73 +15,86 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Segoe UI,Arial,sans-serif;
+font-family:Segoe UI,Tahoma,sans-serif;
 }
 
 body{
 
 background:#050505;
-color:#fff;
+
+color:white;
+
 overflow-x:hidden;
 
 background-image:
+
 linear-gradient(rgba(0,255,120,.05) 1px,transparent 1px),
+
 linear-gradient(90deg,rgba(0,255,120,.05) 1px,transparent 1px);
 
-background-size:40px 40px;
+background-size:45px 45px;
 
 }
 
-/******** HEADER ********/
+/**************** HEADER ****************/
 
 header{
 
-background:#0d0d0d;
-padding:20px;
+background:#111;
+
+padding:25px;
+
 border-bottom:3px solid #00ff88;
+
 box-shadow:0 0 20px #00ff88;
+
+text-align:center;
 
 }
 
 header h1{
 
-text-align:center;
-font-size:38px;
-letter-spacing:3px;
+font-size:46px;
+
+letter-spacing:2px;
+
 color:#00ff88;
 
 }
 
-header h3{
+header p{
 
-text-align:center;
-font-weight:400;
-margin-top:8px;
-color:white;
+margin-top:10px;
+
+font-size:26px;
 
 }
 
-/******** STATUS ********/
-
 .status{
 
+margin-top:18px;
+
+font-size:24px;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
-gap:12px;
 
-margin-top:15px;
-
-font-size:22px;
+gap:15px;
 
 }
 
 .dot{
 
 width:18px;
+
 height:18px;
-background:#00ff00;
+
 border-radius:50%;
+
+background:#00ff00;
 
 animation:blink 1s infinite;
 
@@ -93,31 +110,33 @@ opacity:.2;
 
 }
 
-/******** ECG ********/
+/**************** ECG ****************/
 
 .ecg{
 
 margin:30px auto;
 
 width:90%;
-height:120px;
+
+height:140px;
+
+background:black;
 
 border:2px solid #00ff88;
 
-border-radius:15px;
+border-radius:18px;
 
 overflow:hidden;
-
-background:black;
 
 position:relative;
 
 }
 
-svg{
+.ecg svg{
 
 width:200%;
-height:120px;
+
+height:140px;
 
 position:absolute;
 
@@ -141,18 +160,17 @@ transform:translateX(-50%);
 
 }
 
-/******** CARDS ********/
+/**************** CARDS ****************/
 
 .cards{
 
 display:grid;
 
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 
-gap:20px;
+gap:25px;
 
-padding:30px;
+padding:35px;
 
 }
 
@@ -160,13 +178,13 @@ padding:30px;
 
 background:#111;
 
-border-radius:20px;
-
 padding:25px;
+
+border-radius:20px;
 
 text-align:center;
 
-box-shadow:0 0 20px rgba(0,255,120,.3);
+box-shadow:0 0 20px rgba(0,255,120,.25);
 
 transition:.3s;
 
@@ -174,15 +192,17 @@ transition:.3s;
 
 .card:hover{
 
-transform:scale(1.05);
+transform:translateY(-8px);
 
-box-shadow:0 0 35px #00ff88;
+box-shadow:0 0 30px #00ff88;
 
 }
 
 .card h2{
 
-margin-bottom:15px;
+font-size:36px;
+
+margin-bottom:25px;
 
 color:#00ff88;
 
@@ -190,13 +210,15 @@ color:#00ff88;
 
 .value{
 
-font-size:38px;
+font-size:46px;
 
 font-weight:bold;
 
+transition:.4s;
+
 }
 
-/******** HISTORY ********/
+/**************** HISTORY ****************/
 
 .history{
 
@@ -208,9 +230,21 @@ background:#111;
 
 padding:20px;
 
-border-radius:15px;
+border-radius:18px;
 
-margin-bottom:30px;
+margin-bottom:40px;
+
+}
+
+.history h2{
+
+text-align:center;
+
+margin-bottom:20px;
+
+font-size:36px;
+
+color:#00ff88;
 
 }
 
@@ -220,13 +254,13 @@ width:100%;
 
 border-collapse:collapse;
 
-margin-top:20px;
+margin-top:15px;
 
 }
 
 th{
 
-background:#00aa55;
+background:#00994d;
 
 padding:15px;
 
@@ -244,48 +278,32 @@ border-bottom:1px solid #333;
 
 tr:hover{
 
-background:#1a1a1a;
+background:#1d1d1d;
 
 }
-/* Pulse animation */
-
-@keyframes pulse {
-0% { transform: scale(1); }
-50% { transform: scale(1.08); }
-100% { transform: scale(1); }
-}
-
-.card:hover .value{
-animation:pulse .6s infinite;
-}
-
-/* Fade effect */
-
-.value{
-transition:all .4s ease;
-}
-
-/* Smooth history */
 
 details{
+
 margin-top:15px;
-background:#181818;
-border-radius:10px;
-padding:10px;
+
 }
 
 summary{
+
 cursor:pointer;
-font-size:20px;
-color:#00ff88;
+
+font-size:22px;
+
 padding:10px;
+
+color:#00ff88;
+
 font-weight:bold;
+
 }
 
-summary:hover{
-color:white;
-}
 </style>
+
 </head>
 
 <body>
@@ -294,27 +312,22 @@ color:white;
 
 <h1>🏥 PATIENT HEALTH MONITORING SYSTEM</h1>
 
-<h3>Sarhad University of Science & Information Technology</h3>
+<p>Sarhad University of Science & Information Technology</p>
 
 <div class="status">
 
 <div class="dot"></div>
 
-<div id="status">
-
-ONLINE
-
-</div>
+<div id="status">ONLINE</div>
 
 </div>
 
 </header>
-
-<!-- ECG Animation -->
+<!-- ================= ECG MONITOR ================= -->
 
 <div class="ecg">
 
-<svg viewBox="0 0 1200 120">
+<svg viewBox="0 0 1200 140">
 
 <polyline
 
@@ -322,65 +335,55 @@ fill="none"
 
 stroke="#00ff66"
 
-stroke-width="3"
+stroke-width="4"
 
 points="
 
-0,60
+0,70
 
-80,60
+80,70
 
-100,60
+120,70
 
-120,60
+160,70
 
-140,20
+180,25
 
-160,100
+205,120
 
-180,60
+230,70
 
-260,60
+330,70
 
-340,60
+430,70
 
-360,20
+450,25
 
-380,100
+475,120
 
-400,60
+500,70
 
-480,60
+600,70
 
-560,60
+700,70
 
-580,20
+720,25
 
-600,100
+745,120
 
-620,60
+770,70
 
-700,60
+900,70
 
-780,60
+980,70
 
-800,20
+1000,25
 
-820,100
+1025,120
 
-840,60
+1050,70
 
-920,60
-
-1000,60
-
-1020,20
-
-1040,100
-
-1060,60
-
-1200,60
+1200,70
 
 "/>
 
@@ -388,11 +391,14 @@ points="
 
 </div>
 
+<!-- ================= LIVE DATA CARDS ================= -->
+
 <div class="cards">
 
 <div class="card">
 
-<h2 id="heartTitle">❤️ Heart Rate</h2>
+<h2>❤️ Heart Rate</h2>
+
 <div class="value" id="hr">
 
 --
@@ -439,122 +445,140 @@ points="
 
 </div>
 
-<div class="history">
-
-<h2 align="center">
-
-📊 Patient History
-
-</h2>
-
-<div id="historyBox">
-
-Loading...
-
-</div>
-
-</div>
-<div id="historyBox">
-
-Loading...
-
-</div>
-
-</div>
-
-<script type="module">
-
-// Paste the ENTIRE JavaScript here
-
-</script>
+<!-- ================= HISTORY ================= -->
 
 <div class="history">
 
-<h2 align="center">
-
-📊 Patient History
-
-</h2>
+<h2>📊 Patient History</h2>
 
 <div id="historyBox">
 
-Loading...
+Loading patient history...
 
 </div>
 
 </div>
-
-<!-- PASTE EVERYTHING BELOW HERE -->
-
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import {
+getDatabase,
+ref,
+onValue
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey:"AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
-  authDomain:"real-time-patient-monito-76d69.firebaseapp.com",
-  databaseURL:"https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId:"real-time-patient-monito-76d69",
-  storageBucket:"real-time-patient-monito-76d69.firebasestorage.app",
-  messagingSenderId:"807607602018",
-  appId:"1:807607602018:web:5110875164e2873bb77a3b"
+
+apiKey:"AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
+authDomain:"real-time-patient-monito-76d69.firebaseapp.com",
+databaseURL:"https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId:"real-time-patient-monito-76d69",
+storageBucket:"real-time-patient-monito-76d69.appspot.com",
+messagingSenderId:"807607602018",
+appId:"1:807607602018:web:5110875164e2873bb77a3b"
+
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ==================== LIVE DATA ====================
+//===================== LIVE DATA =====================
 
-onValue(ref(db,"Live"),(snapshot)=>{
+const liveRef = ref(db,"Live");
 
-const d = snapshot.val();
+onValue(liveRef,(snapshot)=>{
 
-if(!d){
+const data = snapshot.val();
+
+if(data==null){
+
 document.getElementById("status").innerHTML="OFFLINE";
+
 document.getElementById("status").style.color="red";
+
 return;
+
 }
 
-document.getElementById("temp").innerHTML=d.Temperature+" °C";
-document.getElementById("hr").innerHTML=d.HeartRate+" BPM";
-document.getElementById("spo2").innerHTML=d.SpO2+" %";
-document.getElementById("time").innerHTML=d.Time;
+document.getElementById("status").innerHTML=data.WiFi ?? "ONLINE";
 
-const status=document.getElementById("status");
-status.innerHTML=d.WiFi;
+document.getElementById("status").style.color=
+(data.WiFi=="ONLINE") ? "#00ff00" : "red";
 
-document.getElementById("temp").style.color=
-d.Temperature>=38?"red":"#00ff88";
+document.getElementById("temp").innerHTML=
+(data.Temperature ?? "--")+" °C";
 
-document.getElementById("hr").style.color=
-(d.HeartRate>100||d.HeartRate<50)?"red":"#00ff88";
+document.getElementById("hr").innerHTML=
+(data.HeartRate ?? "--")+" BPM";
 
-document.getElementById("spo2").style.color=
-d.SpO2<95?"red":"#00ff88";
+document.getElementById("spo2").innerHTML=
+(data.SpO2 ?? "--")+" %";
 
-status.style.color=
-d.WiFi=="ONLINE"?"#00ff00":"red";
+document.getElementById("time").innerHTML=
+(data.Time ?? "--");
+
+// Temperature Alert
+
+if(Number(data.Temperature)>=38){
+
+document.getElementById("temp").style.color="red";
+
+}else{
+
+document.getElementById("temp").style.color="#00ff88";
+
+}
+
+// Heart Rate Alert
+
+if(Number(data.HeartRate)>100 || Number(data.HeartRate)<50){
+
+document.getElementById("hr").style.color="red";
+
+}else{
+
+document.getElementById("hr").style.color="#00ff88";
+
+}
+
+// SpO₂ Alert
+
+if(Number(data.SpO2)<95){
+
+document.getElementById("spo2").style.color="red";
+
+}else{
+
+document.getElementById("spo2").style.color="#00ff88";
+
+}
 
 });
+//===================== HISTORY =====================
 
-// ==================== HISTORY ====================
+const historyRef = ref(db,"History");
 
-onValue(ref(db,"History"),(snapshot)=>{
+onValue(historyRef,(snapshot)=>{
 
-const history=snapshot.val();
+const history = snapshot.val();
+
+const historyBox = document.getElementById("historyBox");
 
 if(!history){
-document.getElementById("historyBox").innerHTML="No History";
+
+historyBox.innerHTML="<h3>No History Available</h3>";
+
 return;
+
 }
 
 let html="";
 
-for(const date in history){
+Object.keys(history).reverse().forEach(date=>{
 
 html+=`
-<details open>
+
+<details>
 
 <summary>📅 ${date}</summary>
 
@@ -571,29 +595,32 @@ html+=`
 <th>SpO₂</th>
 
 </tr>
+
 `;
 
-for(const tm in history[date]){
+const dayData = history[date];
 
-const r=history[date][tm];
+Object.keys(dayData).reverse().forEach(time=>{
+
+const row = dayData[time];
 
 html+=`
 
 <tr>
 
-<td>${r.Time}</td>
+<td>${row.Time ?? time}</td>
 
-<td>${r.Temperature}</td>
+<td>${row.Temperature ?? "--"} °C</td>
 
-<td>${r.HeartRate}</td>
+<td>${row.HeartRate ?? "--"} BPM</td>
 
-<td>${r.SpO2}</td>
+<td>${row.SpO2 ?? "--"} %</td>
 
 </tr>
 
 `;
 
-}
+});
 
 html+=`
 
@@ -603,156 +630,18 @@ html+=`
 
 `;
 
-}
+});
 
-document.getElementById("historyBox").innerHTML=html;
+historyBox.innerHTML=html;
+
+},(error)=>{
+
+console.error(error);
+
+document.getElementById("historyBox").innerHTML="Unable to load history.";
 
 });
 
 </script>
-<div class="history">
-
-<h2 align="center">
-
-📊 Patient History
-
-</h2>
-
-<div id="historyBox">
-
-Loading...
-
-</div>
-
-</div>
-
-<!-- PASTE EVERYTHING BELOW HERE -->
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey:"AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
-  authDomain:"real-time-patient-monito-76d69.firebaseapp.com",
-  databaseURL:"https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId:"real-time-patient-monito-76d69",
-  storageBucket:"real-time-patient-monito-76d69.firebasestorage.app",
-  messagingSenderId:"807607602018",
-  appId:"1:807607602018:web:5110875164e2873bb77a3b"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-// ==================== LIVE DATA ====================
-
-onValue(ref(db,"Live"),(snapshot)=>{
-
-const d = snapshot.val();
-
-if(!d){
-document.getElementById("status").innerHTML="OFFLINE";
-document.getElementById("status").style.color="red";
-return;
-}
-
-document.getElementById("temp").innerHTML=d.Temperature+" °C";
-document.getElementById("hr").innerHTML=d.HeartRate+" BPM";
-document.getElementById("spo2").innerHTML=d.SpO2+" %";
-document.getElementById("time").innerHTML=d.Time;
-
-const status=document.getElementById("status");
-status.innerHTML=d.WiFi;
-
-document.getElementById("temp").style.color=
-d.Temperature>=38?"red":"#00ff88";
-
-document.getElementById("hr").style.color=
-(d.HeartRate>100||d.HeartRate<50)?"red":"#00ff88";
-
-document.getElementById("spo2").style.color=
-d.SpO2<95?"red":"#00ff88";
-
-status.style.color=
-d.WiFi=="ONLINE"?"#00ff00":"red";
-
-});
-
-// ==================== HISTORY ====================
-
-onValue(ref(db,"History"),(snapshot)=>{
-
-const history=snapshot.val();
-
-if(!history){
-document.getElementById("historyBox").innerHTML="No History";
-return;
-}
-
-let html="";
-
-for(const date in history){
-
-html+=`
-<details open>
-
-<summary>📅 ${date}</summary>
-
-<table>
-
-<tr>
-
-<th>Time</th>
-
-<th>Temperature</th>
-
-<th>Heart Rate</th>
-
-<th>SpO₂</th>
-
-</tr>
-`;
-
-for(const tm in history[date]){
-
-const r=history[date][tm];
-
-html+=`
-
-<tr>
-
-<td>${r.Time}</td>
-
-<td>${r.Temperature}</td>
-
-<td>${r.HeartRate}</td>
-
-<td>${r.SpO2}</td>
-
-</tr>
-
-`;
-
-}
-
-html+=`
-
-</table>
-
-</details>
-
-`;
-
-}
-
-document.getElementById("historyBox").innerHTML=html;
-
-});
-
-</script>
-
 </body>
 </html>
-
