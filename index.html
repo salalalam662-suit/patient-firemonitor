@@ -247,7 +247,44 @@ tr:hover{
 background:#1a1a1a;
 
 }
+/* Pulse animation */
 
+@keyframes pulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.08); }
+100% { transform: scale(1); }
+}
+
+.card:hover .value{
+animation:pulse .6s infinite;
+}
+
+/* Fade effect */
+
+.value{
+transition:all .4s ease;
+}
+
+/* Smooth history */
+
+details{
+margin-top:15px;
+background:#181818;
+border-radius:10px;
+padding:10px;
+}
+
+summary{
+cursor:pointer;
+font-size:20px;
+color:#00ff88;
+padding:10px;
+font-weight:bold;
+}
+
+summary:hover{
+color:white;
+}
 </style>
 </head>
 
@@ -355,8 +392,7 @@ points="
 
 <div class="card">
 
-<h2>❤️ Heart Rate</h2>
-
+<h2 id="heartTitle">❤️ Heart Rate</h2>
 <div class="value" id="hr">
 
 --
@@ -432,5 +468,291 @@ Loading...
 
 </script>
 
+<div class="history">
+
+<h2 align="center">
+
+📊 Patient History
+
+</h2>
+
+<div id="historyBox">
+
+Loading...
+
+</div>
+
+</div>
+
+<!-- PASTE EVERYTHING BELOW HERE -->
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
+  authDomain:"real-time-patient-monito-76d69.firebaseapp.com",
+  databaseURL:"https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"real-time-patient-monito-76d69",
+  storageBucket:"real-time-patient-monito-76d69.firebasestorage.app",
+  messagingSenderId:"807607602018",
+  appId:"1:807607602018:web:5110875164e2873bb77a3b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ==================== LIVE DATA ====================
+
+onValue(ref(db,"Live"),(snapshot)=>{
+
+const d = snapshot.val();
+
+if(!d){
+document.getElementById("status").innerHTML="OFFLINE";
+document.getElementById("status").style.color="red";
+return;
+}
+
+document.getElementById("temp").innerHTML=d.Temperature+" °C";
+document.getElementById("hr").innerHTML=d.HeartRate+" BPM";
+document.getElementById("spo2").innerHTML=d.SpO2+" %";
+document.getElementById("time").innerHTML=d.Time;
+
+const status=document.getElementById("status");
+status.innerHTML=d.WiFi;
+
+document.getElementById("temp").style.color=
+d.Temperature>=38?"red":"#00ff88";
+
+document.getElementById("hr").style.color=
+(d.HeartRate>100||d.HeartRate<50)?"red":"#00ff88";
+
+document.getElementById("spo2").style.color=
+d.SpO2<95?"red":"#00ff88";
+
+status.style.color=
+d.WiFi=="ONLINE"?"#00ff00":"red";
+
+});
+
+// ==================== HISTORY ====================
+
+onValue(ref(db,"History"),(snapshot)=>{
+
+const history=snapshot.val();
+
+if(!history){
+document.getElementById("historyBox").innerHTML="No History";
+return;
+}
+
+let html="";
+
+for(const date in history){
+
+html+=`
+<details open>
+
+<summary>📅 ${date}</summary>
+
+<table>
+
+<tr>
+
+<th>Time</th>
+
+<th>Temperature</th>
+
+<th>Heart Rate</th>
+
+<th>SpO₂</th>
+
+</tr>
+`;
+
+for(const tm in history[date]){
+
+const r=history[date][tm];
+
+html+=`
+
+<tr>
+
+<td>${r.Time}</td>
+
+<td>${r.Temperature}</td>
+
+<td>${r.HeartRate}</td>
+
+<td>${r.SpO2}</td>
+
+</tr>
+
+`;
+
+}
+
+html+=`
+
+</table>
+
+</details>
+
+`;
+
+}
+
+document.getElementById("historyBox").innerHTML=html;
+
+});
+
+</script>
+<div class="history">
+
+<h2 align="center">
+
+📊 Patient History
+
+</h2>
+
+<div id="historyBox">
+
+Loading...
+
+</div>
+
+</div>
+
+<!-- PASTE EVERYTHING BELOW HERE -->
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyC9eQNZPtqWXfjy85v6Bfnpm77t648ih8",
+  authDomain:"real-time-patient-monito-76d69.firebaseapp.com",
+  databaseURL:"https://real-time-patient-monito-76d69-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"real-time-patient-monito-76d69",
+  storageBucket:"real-time-patient-monito-76d69.firebasestorage.app",
+  messagingSenderId:"807607602018",
+  appId:"1:807607602018:web:5110875164e2873bb77a3b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ==================== LIVE DATA ====================
+
+onValue(ref(db,"Live"),(snapshot)=>{
+
+const d = snapshot.val();
+
+if(!d){
+document.getElementById("status").innerHTML="OFFLINE";
+document.getElementById("status").style.color="red";
+return;
+}
+
+document.getElementById("temp").innerHTML=d.Temperature+" °C";
+document.getElementById("hr").innerHTML=d.HeartRate+" BPM";
+document.getElementById("spo2").innerHTML=d.SpO2+" %";
+document.getElementById("time").innerHTML=d.Time;
+
+const status=document.getElementById("status");
+status.innerHTML=d.WiFi;
+
+document.getElementById("temp").style.color=
+d.Temperature>=38?"red":"#00ff88";
+
+document.getElementById("hr").style.color=
+(d.HeartRate>100||d.HeartRate<50)?"red":"#00ff88";
+
+document.getElementById("spo2").style.color=
+d.SpO2<95?"red":"#00ff88";
+
+status.style.color=
+d.WiFi=="ONLINE"?"#00ff00":"red";
+
+});
+
+// ==================== HISTORY ====================
+
+onValue(ref(db,"History"),(snapshot)=>{
+
+const history=snapshot.val();
+
+if(!history){
+document.getElementById("historyBox").innerHTML="No History";
+return;
+}
+
+let html="";
+
+for(const date in history){
+
+html+=`
+<details open>
+
+<summary>📅 ${date}</summary>
+
+<table>
+
+<tr>
+
+<th>Time</th>
+
+<th>Temperature</th>
+
+<th>Heart Rate</th>
+
+<th>SpO₂</th>
+
+</tr>
+`;
+
+for(const tm in history[date]){
+
+const r=history[date][tm];
+
+html+=`
+
+<tr>
+
+<td>${r.Time}</td>
+
+<td>${r.Temperature}</td>
+
+<td>${r.HeartRate}</td>
+
+<td>${r.SpO2}</td>
+
+</tr>
+
+`;
+
+}
+
+html+=`
+
+</table>
+
+</details>
+
+`;
+
+}
+
+document.getElementById("historyBox").innerHTML=html;
+
+});
+
+</script>
+
 </body>
 </html>
+
